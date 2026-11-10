@@ -1,76 +1,71 @@
 # 📊 Análisis de Comportamiento de Clientes y Planes Telefónicos — ConnectaTel
 
-Este repositorio contiene el análisis exploratorio y estadístico realizado para la empresa de telecomunicaciones **ConnectaTel**. El objetivo principal como analistas de datos fue evaluar el comportamiento de uso de los clientes respecto a las llamadas y mensajes de texto en sus respectivos planes contratados, identificar brechas de subutilización y proponer recomendaciones estratégicas orientadas a la optimización de la oferta comercial y la retención de clientes.
+> *Contexto formativo: Este proyecto forma parte de la ruta de especialización en Data Analysis de TripleTen.*
 
 ---
 
-## 🎯 Objetivo del Proyecto
-
-* **Analizar el uso real** de servicios de telefonía (minutos de llamada y mensajes de texto) por parte de los clientes.
-* **Evaluar la adecuación** de los planes actuales (*Básico* y *Premium*) según los patrones de consumo identificados.
-* **Identificar factores y patrones** asociados a la baja de clientes (*churn*).
-* **Formular recomendaciones basadas en datos** para optimizar la estructura tarifaria, reducir la deserción y mejorar la satisfacción del cliente.
+## 1. Resumen Ejecutivo (BLUF)
+* **Impacto Directivo:** El análisis exploratorio y estadístico de los datos de **ConnectaTel** revela una masiva brecha de subutilización: los clientes consumen en promedio una fracción menor a los límites contratados (~4.5 llamadas, ~23.3 minutos y ~5.5 mensajes al mes).
+* **Decisión Estratégica:** La gran mayoría de los usuarios se concentran en el plan *Básico*, pero incluso este plan excede las necesidades reales de consumo. Se recomienda rediseñar la estructura tarifaria y enfocar campañas de retención en clientes con caídas drásticas de actividad (*churn*).
 
 ---
 
-## 📁 Datasets Utilizados
-
-El análisis se fundamenta en los siguientes conjuntos de datos estructurados:
-
-1. **`users.csv` / `users.json`**: Información demográfica y de cuenta de los clientes (ID de usuario, nombre, ciudad, fecha de alta, plan contratado y fecha de baja/churn si aplica).
-2. **`calls.csv`**: Registro de llamadas realizadas (ID de llamada, ID de usuario, fecha y duración en minutos).
-3. **`messages.csv`**: Registro de mensajes de texto enviados (ID de mensaje, ID de usuario y fecha de envío).
-4. **`plans.csv`**: Configuración de las tarifas y límites de cada plan:
-   * **Plan Básico**: 12 USD/mes | 100 minutos de llamadas | 100 mensajes de texto.
-   * **Plan Premium**: 25 USD/mes | 600 minutos de llamadas | 500 mensajes de texto.
-
-> **Nota de Alcance:** El análisis se enfoca de manera exclusiva en minutos de voz y mensajes de texto (SMS). No se incluyen datos ni variables referentes al uso de internet o datos móviles.
+## 2. Estructura y Datos del Proyecto
+* **Origen de los Datos:** Datasets estructurados de clientes, llamadas, mensajes y configuración de planes de ConnectaTel.
+* **Datasets Utilizados:**
+  1. **`users.csv` / `users.json`**: Información demográfica, ciudad, fecha de alta, plan y fecha de baja (*churn*).
+  2. **`calls.csv`**: Registro de llamadas (ID, usuario, fecha y duración en minutos).
+  3. **`messages.csv`**: Registro de mensajes de texto (ID, usuario y fecha de envío).
+  4. **`plans.csv`**: Tarifas y límites (*Básico*: 12 USD, 100 min, 100 SMS | *Premium*: 25 USD, 600 min, 500 SMS).
+* **Nota de Alcance:** Análisis enfocado exclusivamente en llamadas y mensajes de texto (SMS); no incluye datos ni variables de internet o datos móviles.
+* **Reproducibilidad:** Acceso mediante [Google Colab](https://colab.research.google.com/) y ejecución local vía clonación de repositorio.
 
 ---
 
-## 🛠️ Etapas del Análisis Realizado
-
-1. **Carga y Preparación de Datos:**
-   * Importación de librerías esenciales (`pandas`, `numpy`, `matplotlib`, `seaborn`).
-   * Limpieza de datos: tratamiento de valores nulos, verificación de duplicados y conversión de tipos de datos (fechas y numéricos).
-
-2. **Análisis Exploratorio de Datos (EDA):**
-   * Agregación mensual del consumo por usuario (total de llamadas, minutos consumidos y mensajes enviados).
-   * Cálculo de métricas estadísticas clave (media, mediana, desviación estándar, percentiles).
-   * Visualización de distribuciones de consumo mediante histogramas y diagramas de caja (*boxplots*).
-
-3. **Evaluación de Subutilización de Servicios:**
-   * Comparación cuantitativa entre las cuotas incluidas en los planes y el consumo real promedio de los clientes.
-   * Identificación del porcentaje de usuarios que saturan o sobrepasan sus límites contratados.
-
-4. **Análisis de Cancelación de Clientes (*Churn*):**
-   * Evaluación de la tasa de retención frente a la fecha de cancelación.
-   * Correlación entre la inactividad/bajo volumen de llamadas/SMS y la probabilidad de baja.
-
-5. **Conclusiones y Recomendaciones Estratégicas:**
-   * Formulación de propuestas operativas y comerciales respaldadas por la evidencia analítica.
+## 3. Metodología y Enfoque Analítico
+* **Librerías y Herramientas:** `pandas`, `numpy`, `matplotlib`, `seaborn` en entornos Jupyter Notebook / Google Colab.
+* **Limpieza y Preparación:** 
+  * Tratamiento de valores nulos y duplicados.
+  * Corrección de valores atípicos y *sentinels* (como `-999` en edad y `?` en ciudades).
+  * Estandarización de tipos de datos y fechas.
+* **Análisis Exploratorio y Estadístico:**
+  * Agregación mensual de consumo por usuario.
+  * Cálculo de métricas descriptivas (media, mediana, desviación estándar, percentiles).
+  * Detección de outliers mediante diagramas de caja (*boxplots* optimizados con `showmeans=True`).
+  * Segmentación de clientes cruzando variables demográficas y de uso.
 
 ---
 
-## 💡 Hallazgos Clave
+## 4. Descubrimientos y Hallazgos Principales (Core)
+* **Brecha de Subutilización Extrema:** El consumo mensual por cliente es drásticamente inferior a las cuotas incluidas en los planes, evidenciando sobre-aprovisionamiento en los paquetes actuales.
+* **Concentración en Plan Básico:** La base de usuarios está mayoritariamente en el plan de menor costo, donde persiste la subutilización.
+* **Patrón de Cancelación (*Churn*):** Los clientes que presentan reducciones drásticas y repentinas en su volumen de llamadas y mensajes de texto muestran una propensión marcadamente mayor a cancelar el servicio.
 
-* **Brecha de Subutilización:** El consumo promedio mensual por cliente es drásticamente inferior a los límites que ofrecen los planes (promedio ~4.5 llamadas, ~23.3 minutos y ~5.5 mensajes al mes).
-* **Distribución de Clientes:** La mayoría de los usuarios están concentrados en el plan *Básico*, sin embargo, incluso en este nivel la capacidad incluida sobrepasa con frecuencia sus necesidades reales.
-* **Patrón de Deserción:** Los clientes con drástica reducción en su actividad de llamadas y mensajes presentan una mayor propensión a cancelar el servicio.
+---
+
+## 5. Limitaciones Metodológicas
+* **Exclusión de Tráfico de Datos:** El alcance se limita estrictamente a voz y SMS, dejando fuera métricas de consumo de internet móvil.
+* **Ventana Temporal:** Los datos provienen de un periodo de observación específico, por lo que estacionalidades de largo plazo o cambios macroeconómicos no están modelados.
+* **Supuestos de Imputación:** La imputación de valores faltantes y demográficos asume distribuciones normales o paramétricas estándar (*MAR*).
+
+---
+
+## 6. Próximos Pasos Estratégicos
+* **Rediseño Tarifario:** Introducir planes flexibles o micro-paquetes para capturar a los usuarios con consumo bajo que hoy perciben el plan Básico como costoso.
+* **Sistema de Alerta Temprana de Churn:** Implementar un modelo predictivo basado en la caída de llamadas/SMS para activar protocolos de retención a tiempo.
+* **Optimización de Canales de Soporte:** Fortalecer el acompañamiento a clientes en zonas con mayor tasa de deserción.
 
 ---
 
 ## 🚀 Cómo Ejecutar el Notebook
 
 ### Opción 1: Abrir directamente en Google Colab (Recomendado)
-
-1. Haz clic en el siguiente enlace o abre [Google Colab](https://colab.research.google.com/).
+1. Haz clic en o abre [Google Colab](https://colab.research.google.com/).
 2. Selecciona la pestaña **GitHub**.
 3. Pega la URL de este repositorio y selecciona el archivo `.ipynb`.
 4. Ejecuta las celdas secuencialmente presionando `Shift + Enter`.
 
 ### Opción 2: Ejecución Local en Jupyter Notebook / VS Code
-
 1. **Clonar el repositorio:**
    ```bash
    git clone [https://github.com/tu-usuario/nombre-del-repositorio.git](https://github.com/tu-usuario/nombre-del-repositorio.git)
